@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Technical Overview | AI Tools Suite</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="doc_styles.css">
+</head>
+
+<body>
+
+    <nav class="main-nav">
+        <a href="index.html" class="nav-brand">AI Tools Suite</a>
+        <div class="nav-links">
+            <a href="index.html" class="nav-link">Humanizer</a>
+            <a href="contentdetector.html" class="nav-link">Detector</a>
+            <a href="docs_intro.html" class="nav-link active">Documentation</a>
+        </div>
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle Dark Mode">🌙</button>
+    </nav>
+
+    <div class="doc-container">
+        <aside class="doc-sidebar">
+            <a href="docs_intro.html" class="sidebar-link">Introduction</a>
+            <a href="docs_humanizer.html" class="sidebar-link">Humanizer Guide</a>
+            <a href="docs_detector.html" class="sidebar-link">Detector Guide</a>
+            <a href="docs_technical.html" class="sidebar-link active-page">Technical Overview</a>
+        </aside>
+
+        <main class="doc-content">
+            <h1>Technical Overview</h1>
+            <p>Understanding the logic behind our detection and humanization algorithms.</p>
+
+            <h2>The Heuristics of Detection</h2>
+            <p>Our detector uses a lightweight heuristic approach rather than a massive neural network. This allows for
+                instant results directly in your browser without API latency.</p>
+
+            <div class="card">
+                <h3>1. Burstiness (Sentence Variance)</h3>
+                <p>
+                    <code>Variance = Σ(length - avgLength)² / N</code><br>
+                    <br>
+                    <strong>Logic:</strong> AI models generate text token-by-token using probability distributions that
+                    favor "safe" and average sentence structures. This results in low standard deviation (low
+                    burstiness). Human writing is chaotic, mixing very short sentences with long, complex ones (high
+                    burstiness).
+                </p>
+            </div>
+
+            <div class="card">
+                <h3>2. Perplexity (Simulated)</h3>
+                <p>
+                    While we don't calculate true LLM perplexity locally, we approximate it via <strong>Lexical
+                        Diversity</strong> and <strong>Repetition Rate</strong>.
+                    <br><br>
+                    AI text often loops or repeats phrases when trying to meet word counts. We detect 3-gram repetitions
+                    and penalize the score accordingly.
+                </p>
+            </div>
+
+            <h2>Humanization Techniques</h2>
+            <p>The Humanizer reverses these patterns:</p>
+            <ul>
+                <li><strong>Structural Injection:</strong> Deliberately breaks sentences to increase burstiness.</li>
+                <li><strong>Stochastic Replacement:</strong> Swaps common words for contextually appropriate synonyms
+                    based on a randomized "temperature" (Level slider).</li>
+                <li><strong>Imperfection Simulation:</strong> Optionally adds minor grammatical "flaws" or
+                    colloquialisms that strict LLMs avoid.</li>
+            </ul>
+        </main>
+    </div>
+
+    <script>
+        const themeToggle = document.getElementById('themeToggle');
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        document.documentElement.setAttribute('data-theme', savedTheme);
+        themeToggle.innerText = savedTheme === 'light' ? '🌙' : '☀️';
+
+        themeToggle.addEventListener('click', () => {
+            const current = document.documentElement.getAttribute('data-theme');
+            const next = current === 'light' ? 'dark' : 'light';
+            document.documentElement.setAttribute('data-theme', next);
+            localStorage.setItem('theme', next);
+            themeToggle.innerText = next === 'light' ? '🌙' : '☀️';
+        });
+    </script>
+</body>
+
+</html>

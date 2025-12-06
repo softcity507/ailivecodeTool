@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Humanizer Guide | AI Tools Suite</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="doc_styles.css">
+</head>
+
+<body>
+
+    <nav class="main-nav">
+        <a href="index.html" class="nav-brand">AI Tools Suite</a>
+        <div class="nav-links">
+            <a href="index.html" class="nav-link">Humanizer</a>
+            <a href="contentdetector.html" class="nav-link">Detector</a>
+            <a href="docs_intro.html" class="nav-link active">Documentation</a>
+        </div>
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle Dark Mode">🌙</button>
+    </nav>
+
+    <div class="doc-container">
+        <aside class="doc-sidebar">
+            <a href="docs_intro.html" class="sidebar-link">Introduction</a>
+            <a href="docs_humanizer.html" class="sidebar-link active-page">Humanizer Guide</a>
+            <a href="docs_detector.html" class="sidebar-link">Detector Guide</a>
+            <a href="docs_technical.html" class="sidebar-link">Technical Overview</a>
+        </aside>
+
+        <main class="doc-content">
+            <h1>AI Humanizer Guide</h1>
+            <p>Transform robotic text into natural, human-sounding language.</p>
+
+            <h2>Key Features</h2>
+            <div class="card">
+                <h3>Tone & Style</h3>
+                <p>Select from various tones such as Standard, Casual, Professional, Academic, or Creative to match your
+                    target audience.</p>
+            </div>
+
+            <div class="card">
+                <h3>Humanization Level</h3>
+                <p>Adjust the intensity slider (1-100) to control how much the text is altered. Higher levels introduce
+                    more idioms, structural changes, and "human-like" imperfections.</p>
+            </div>
+
+            <h2>How to Use</h2>
+            <ol>
+                <li><strong>Input Text:</strong> Paste your AI-generated text into the left panel.</li>
+                <li><strong>Configure:</strong> Choose your desired Tone and adjust the Humanization Level.</li>
+                <li><strong>Enhance:</strong> Check options like "Use Contractions" or "Insert Idioms" for better
+                    results.</li>
+                <li><strong>Process:</strong> Click "Humanize Text" and wait for the magic to happen.</li>
+                <li><strong>Output:</strong> Copy the result or save it as a text file.</li>
+            </ol>
+        </main>
+    </div>
+
+    <script>
+        const themeToggle = document.getElementById('themeToggle');
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        document.documentElement.setAttribute('data-theme', savedTheme);
+        themeToggle.innerText = savedTheme === 'light' ? '🌙' : '☀️';
+
+        themeToggle.addEventListener('click', () => {
+            const current = document.documentElement.getAttribute('data-theme');
+            const next = current === 'light' ? 'dark' : 'light';
+            document.documentElement.setAttribute('data-theme', next);
+            localStorage.setItem('theme', next);
+            themeToggle.innerText = next === 'light' ? '🌙' : '☀️';
+        });
+    </script>
+</body>
+
+</html>

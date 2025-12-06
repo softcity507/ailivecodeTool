@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Humanizer | Advanced Text Transformation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      /* Light Theme */
+      --primary: #4f46e5;
+      --primary-hover: #4338ca;
+      --bg-gradient: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+      --card-bg: rgba(255, 255, 255, 0.85);
+      --card-border: rgba(255, 255, 255, 0.5);
+      --text-main: #1e293b;
+      --text-muted: #64748b;
+      --input-bg: #ffffff;
+      --input-border: #e2e8f0;
+      --shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+      --success: #10b981;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --radius: 16px;
+    }
+
+    [data-theme="dark"] {
+      /* Dark Theme */
+      --primary: #6366f1;
+      --primary-hover: #818cf8;
+      --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+      --card-bg: rgba(30, 41, 59, 0.7);
+      --card-border: rgba(255, 255, 255, 0.1);
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --input-bg: rgba(15, 23, 42, 0.6);
+      --input-border: #334155;
+      --shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    }
+
+    * {
+      box-sizing: border-box;
+      transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+    }
+
+    body {
+      font-family: 'Outfit', sans-serif;
+      background: var(--bg-gradient);
+      color: var(--text-main);
+      min-height: 100vh;
+      margin: 0;
+      padding: 20px;
+      background-attachment: fixed;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    /* Header */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+      padding: 1rem;
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      border: 1px solid var(--card-border);
+      backdrop-filter: blur(12px);
+      box-shadow: var(--shadow);
+    }
+
+    .main-nav-links {
+      display: flex;
+      gap: 1.5rem;
+      margin-left: auto;
+      margin-right: 1.5rem;
+    }
+
+    .nav-link {
+      text-decoration: none;
+      color: var(--text-muted);
+      font-weight: 500;
+      font-size: 0.95rem;
+      padding: 0.5rem 0.75rem;
+      border-radius: 8px;
+      transition: all 0.2s;
+    }
+
+    .nav-link:hover,
+    .nav-link.active {
+      background-color: rgba(99, 102, 241, 0.1);
+      color: var(--primary);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    h1 {
+      margin: 0;
+      font-weight: 700;
+      font-size: 1.5rem;
+      background: linear-gradient(to right, var(--primary), #8b5cf6);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .subtitle {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      display: block;
+    }
+
+    .theme-toggle {
+      background: transparent;
+      border: 1px solid var(--input-border);
+      color: var(--text-main);
+      padding: 0.5rem;
+      border-radius: 50%;
+      cursor: pointer;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+    }
+
+    .theme-toggle:hover {
+      background-color: var(--input-border);
+    }
+
+    /* Main Grid */
+    .grid-layout {
+      display: grid;
+      grid-template-columns: 1fr 350px 1fr;
+      gap: 1.5rem;
+      align-items: start;
+    }
+
+    @media (max-width: 1024px) {
+      .grid-layout {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .card {
+      background-color: var(--card-bg);
+      padding: 1.5rem;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      border: 1px solid var(--card-border);
+      backdrop-filter: blur(12px);
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+
+    label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-bottom: 0.5rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    textarea {
+      width: 100%;
+      flex-grow: 1;
+      min-height: 300px;
+      padding: 1rem;
+      background-color: var(--input-bg);
+      border: 2px solid var(--input-border);
+      border-radius: 12px;
+      font-size: 1rem;
+      color: var(--text-main);
+      resize: vertical;
+      font-family: inherit;
+      line-height: 1.6;
+    }
+
+    textarea:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+    }
+
+    /* Controls */
+    .controls-card {
+      gap: 1.5rem;
+    }
+
+    .control-group {
+      margin-bottom: 1rem;
+    }
+
+    select,
+    input[type="text"],
+    input[type="number"] {
+      width: 100%;
+      padding: 0.75rem;
+      background-color: var(--input-bg);
+      border: 1px solid var(--input-border);
+      border-radius: 8px;
+      color: var(--text-main);
+      font-family: inherit;
+      font-size: 0.95rem;
+    }
+
+    select:focus,
+    input:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+
+    /* Range Slider */
+    input[type=range] {
+      width: 100%;
+      margin: 10px 0;
+      accent-color: var(--primary);
+    }
+
+    .checkbox-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .checkbox-item {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 0.95rem;
+      cursor: pointer;
+    }
+
+    .checkbox-item input {
+      width: 18px;
+      height: 18px;
+      accent-color: var(--primary);
+    }
+
+    /* Buttons */
+    .btn {
+      width: 100%;
+      padding: 1rem;
+      border: none;
+      border-radius: 12px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary), #4f46e5);
+      color: white;
+      box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.2);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 15px -3px rgba(79, 70, 229, 0.3);
+    }
+
+    .btn-ghost {
+      background: transparent;
+      border: 1px solid var(--input-border);
+      color: var(--text-main);
+      margin-top: 0.5rem;
+    }
+
+    .btn-ghost:hover {
+      background-color: var(--input-border);
+    }
+
+    /* Output */
+    .output-area {
+      background-color: var(--input-bg);
+      border: 1px solid var(--input-border);
+      border-radius: 12px;
+      padding: 1rem;
+      min-height: 300px;
+      white-space: pre-wrap;
+      overflow-y: auto;
+      position: relative;
+    }
+
+    .placeholder-text {
+      color: var(--text-muted);
+      opacity: 0.6;
+      text-align: center;
+      margin-top: 40%;
+    }
+
+    .action-row {
+      display: flex;
+      gap: 0.5rem;
+      margin-top: 1rem;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      background: rgba(99, 102, 241, 0.1);
+      color: var(--primary);
+      margin-left: auto;
+    }
+  </style>
+</head>
+
+<body>
+
+
+
+  <div class="container">
+    <header>
+      <div class="brand">
+        <div>
+          <h1>AI Humanizer</h1>
+          <span class="subtitle">Transform robotic text into natural, human-sounding language.</span>
+        </div>
+      </div>
+      <nav class="main-nav-links">
+        <a href="index.html" class="nav-link active">Humanizer</a>
+        <a href="contentdetector.html" class="nav-link">Detector</a>
+        <a href="docs_intro.html" class="nav-link">Documentation</a>
+      </nav>
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle Dark Mode">🌙</button>
+    </header>
+
+    <div class="grid-layout">
+      <!-- Input Column -->
+      <div class="card">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem;">
+          <label for="input">Input Text</label>
+          <button class="btn-ghost" id="pasteBtn"
+            style="width:auto; padding:0.25rem 0.75rem; margin:0; font-size:0.8rem;">Paste</button>
+        </div>
+        <textarea id="input" placeholder="Paste AI-generated text here..."></textarea>
+        <div
+          style="margin-top:1rem; display:flex; justify-content:space-between; color:var(--text-muted); font-size:0.8rem;">
+          <span id="wordCount">0 words</span>
+          <button id="clearBtn"
+            style="background:none; border:none; color:var(--danger); cursor:pointer; font-size:0.8rem;">Clear</button>
+        </div>
+      </div>
+
+      <!-- Controls Column -->
+      <div class="card controls-card">
+        <div class="control-group">
+          <label for="tone">Tone & Style</label>
+          <select id="tone">
+            <option value="standard">Standard (Balanced)</option>
+            <option value="casual">Casual / Conversational</option>
+            <option value="professional">Professional / Formal</option>
+            <option value="academic">Academic / Complex</option>
+            <option value="creative">Creative / Expressive</option>
+          </select>
+        </div>
+
+        <div class="control-group">
+          <div style="display:flex; justify-content:space-between;">
+            <label for="level">Humanization Level</label>
+            <span id="levelValue" style="font-size:0.85rem; color:var(--primary); font-weight:600;">Medium</span>
+          </div>
+          <input id="level" type="range" min="1" max="100" value="50">
+          <p style="font-size:0.8rem; color:var(--text-muted); margin-top:0.25rem;">Higher levels add more variance,
+            idioms, and imperfections.</p>
+        </div>
+
+        <div class="control-group">
+          <label>Enhancements</label>
+          <div class="checkbox-group">
+            <label class="checkbox-item">
+              <input type="checkbox" id="useContractions" checked>
+              Use Contractions (e.g., "don't")
+            </label>
+            <label class="checkbox-item">
+              <input type="checkbox" id="useIdioms" checked>
+              Insert Idioms & Metaphors
+            </label>
+            <label class="checkbox-item">
+              <input type="checkbox" id="fixStructure" checked>
+              Vary Sentence Structure
+            </label>
+            <label class="checkbox-item">
+              <input type="checkbox" id="addImperfections">
+              Simulate Human Imperfections
+            </label>
+          </div>
+        </div>
+
+        <button class="btn btn-primary" id="humanizeBtn">
+          <span>✨ Humanize Text</span>
+        </button>
+      </div>
+
+      <!-- Output Column -->
+      <div class="card">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem;">
+          <label>Humanized Result</label>
+          <span class="badge" id="statusBadge">Ready</span>
+        </div>
+        <div id="output" class="output-area">
+          <div class="placeholder-text">Result will appear here...</div>
+        </div>
+        <div class="action-row">
+          <button class="btn btn-ghost" id="copyBtn">📋 Copy</button>
+          <button class="btn btn-ghost" id="downloadBtn">💾 Save .txt</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+
+
+
+
+    class Humanizer {
+      constructor() {
+        // DOM Elements
+        this.input = document.getElementById('input');
+        this.output = document.getElementById('output');
+        this.toneSelect = document.getElementById('tone');
+        this.levelRange = document.getElementById('level');
+        this.levelValue = document.getElementById('levelValue');
+        this.wordCount = document.getElementById('wordCount');
+        this.themeToggle = document.getElementById('themeToggle');
+
+        // Dictionaries
+        this.synonyms = {
+          "important": ["key", "crucial", "big", "major", "vital"],
+          "utilize": ["use", "make use of", "leverage", "employ"],
+          "demonstrate": ["show", "prove", "reveal", "display"],
+          "assist": ["help", "aid", "support", "give a hand"],
+          "approximately": ["about", "around", "roughly", "nearly"],
+          "subsequently": ["later", "after that", "then", "next"],
+          "furthermore": ["also", "plus", "on top of that", "besides"],
+          "however": ["but", "though", "yet", "although"],
+          "therefore": ["so", "that's why", "hence", "thus"],
+          "initiate": ["start", "begin", "kick off", "launch"],
+          "terminate": ["end", "stop", "finish", "close"],
+          "objective": ["goal", "aim", "target", "plan"],
+          "construct": ["build", "make", "create", "form"],
+          "obtain": ["get", "gain", "acquire", "snag"],
+          "require": ["need", "want", "demand", "call for"],
+          "reside": ["live", "stay", "dwell"],
+          "numerous": ["many", "lots of", "a bunch of", "countless"],
+          "attempt": ["try", "shot", "go", "effort"],
+          "currently": ["now", "right now", "at the moment"],
+          "sufficient": ["enough", "plenty", "adequate"],
+          "entire": ["whole", "total", "full", "complete"]
+        };
+
+        this.idioms = [
+          "at the end of the day", "in a nutshell", "long story short",
+          "to be honest", "frankly speaking", "believe it or not",
+          "for what it's worth", "as a matter of fact", "truth be told"
+        ];
+
+        this.fillers = ["well,", "you know,", "actually,", "basically,", "literally,", "I mean,"];
+
+        this.init();
+      }
+
+
+
+
+      init() {
+        // Theme Logic
+        const savedTheme = localStorage.getItem('theme') || 'dark'; // Default to dark for this app
+        document.documentElement.setAttribute('data-theme', savedTheme);
+        this.updateThemeIcon(savedTheme);
+
+        this.themeToggle.addEventListener('click', () => {
+          const current = document.documentElement.getAttribute('data-theme');
+          const next = current === 'light' ? 'dark' : 'light';
+          document.documentElement.setAttribute('data-theme', next);
+          localStorage.setItem('theme', next);
+          this.updateThemeIcon(next);
+        });
+
+        // Event Listeners
+        this.input.addEventListener('input', () => this.updateStats());
+        this.levelRange.addEventListener('input', () => this.updateLevelLabel());
+        document.getElementById('humanizeBtn').addEventListener('click', () => this.process());
+        document.getElementById('copyBtn').addEventListener('click', () => this.copyOutput());
+        document.getElementById('clearBtn').addEventListener('click', () => {
+          this.input.value = '';
+          this.updateStats();
+        });
+        document.getElementById('pasteBtn').addEventListener('click', async () => {
+          try {
+            const text = await navigator.clipboard.readText();
+            this.input.value = text;
+            this.updateStats();
+          } catch (err) {
+            alert('Failed to read clipboard');
+          }
+        });
+        document.getElementById('downloadBtn').addEventListener('click', () => this.downloadOutput());
+
+        this.updateLevelLabel();
+      }
+
+      updateThemeIcon(theme) {
+        this.themeToggle.innerText = theme === 'light' ? '🌙' : '☀️';
+      }
+
+      updateStats() {
+        const text = this.input.value.trim();
+        const count = text ? text.split(/\s+/).length : 0;
+        this.wordCount.innerText = `${count} words`;
+      }
+
+      updateLevelLabel() {
+        const val = parseInt(this.levelRange.value);
+        let label = "Medium";
+        if (val < 30) label = "Low (Subtle)";
+        else if (val > 70) label = "High (Heavy)";
+        this.levelValue.innerText = label;
+      }
+
+      process() {
+        const text = this.input.value;
+        if (!text.trim()) return;
+
+        const options = {
+          tone: this.toneSelect.value,
+          level: parseInt(this.levelRange.value),
+          contractions: document.getElementById('useContractions').checked,
+          idioms: document.getElementById('useIdioms').checked,
+          structure: document.getElementById('fixStructure').checked,
+          imperfections: document.getElementById('addImperfections').checked
+        };
+
+        // Simulate processing delay for "AI" feel
+        document.getElementById('statusBadge').innerText = "Processing...";
+        this.output.innerHTML = '<div class="placeholder-text">Humanizing...</div>';
+
+        setTimeout(() => {
+          const result = this.humanize(text, options);
+          this.output.innerText = result;
+          document.getElementById('statusBadge').innerText = "Done";
+        }, 600);
+      }
+
+      humanize(text, opts) {
+        // 1. Split Sentences (Advanced Regex)
+        // Handles Mr., Dr., etc. roughly by looking for spaces after dots
+        const sentences = text.match(/[^.!?]+[.!?]+(\s|$)/g) || [text];
+
+        let processed = sentences.map(s => {
+          let clean = s.trim();
+
+          // 2. Synonym Replacement
+          clean = this.replaceSynonyms(clean, opts);
+
+          // 3. Contractions
+          if (opts.contractions) {
+            clean = this.applyContractions(clean);
+          }
+
+          // 4. Structure & Fillers
+          if (opts.structure && Math.random() < (opts.level / 150)) {
+            clean = this.addFillers(clean, opts);
+          }
+
+          // 5. Idioms (Start of sentence)
+          if (opts.idioms && Math.random() < (opts.level / 200)) {
+            const idiom = this.idioms[Math.floor(Math.random() * this.idioms.length)];
+            clean = `${idiom}, ${clean.charAt(0).toLowerCase() + clean.slice(1)}`;
+          }
+
+          // 6. Imperfections (Typos/Lowercase)
+          if (opts.imperfections && Math.random() < (opts.level / 300)) {
+            clean = this.addImperfections(clean);
+          }
+
+          return clean;
+        });
+
+        return processed.join(' ');
+      }
+
+      replaceSynonyms(text, opts) {
+        let words = text.split(' ');
+        return words.map(w => {
+          // Strip punctuation for lookup
+          const cleanW = w.replace(/[.,!?]/g, '');
+          const lowerW = cleanW.toLowerCase();
+          const punctuation = w.slice(cleanW.length);
+
+          if (this.synonyms[lowerW] && Math.random() < (opts.level / 100)) {
+            const candidates = this.synonyms[lowerW];
+            let replacement = candidates[Math.floor(Math.random() * candidates.length)];
+
+            // Match case
+            if (w[0] === w[0].toUpperCase()) {
+              replacement = replacement.charAt(0).toUpperCase() + replacement.slice(1);
+            }
+            return replacement + punctuation;
+          }
+          return w;
+        }).join(' ');
+      }
+
+      applyContractions(text) {
+        const map = {
+          "do not": "don't", "cannot": "can't", "is not": "isn't", "are not": "aren't",
+          "will not": "won't", "have not": "haven't", "has not": "hasn't",
+          "I am": "I'm", "we are": "we're", "they are": "they're", "you are": "you're",
+          "it is": "it's", "that is": "that's", "there is": "there's"
+        };
+
+        let out = text;
+        for (const [key, val] of Object.entries(map)) {
+          const regex = new RegExp(`\\b${key}\\b`, 'gi');
+          out = out.replace(regex, (match) => {
+            return match[0] === match[0].toUpperCase() ? val.charAt(0).toUpperCase() + val.slice(1) : val;
+          });
+        }
+        return out;
+      }
+
+      addFillers(text, opts) {
+        const filler = this.fillers[Math.floor(Math.random() * this.fillers.length)];
+        // Only add if sentence doesn't already start with one
+        if (!text.includes(',')) {
+          return `${filler} ${text.charAt(0).toLowerCase() + text.slice(1)}`;
+        }
+        return text;
+      }
+
+      addImperfections(text) {
+        // Swap random char
+        if (text.length > 5) {
+          const idx = Math.floor(Math.random() * (text.length - 2)) + 1;
+          const chars = text.split('');
+          const temp = chars[idx];
+          chars[idx] = chars[idx + 1];
+          chars[idx + 1] = temp;
+          return chars.join('');
+        }
+        return text;
+      }
+
+      copyOutput() {
+        const text = this.output.innerText;
+        if (!text) return;
+        navigator.clipboard.writeText(text);
+        const originalText = document.getElementById('copyBtn').innerText;
+        document.getElementById('copyBtn').innerText = "✅ Copied!";
+        setTimeout(() => document.getElementById('copyBtn').innerText = originalText, 2000);
+      }
+
+      downloadOutput() {
+        const text = this.output.innerText;
+        if (!text) return;
+        const blob = new Blob([text], { type: 'text/plain' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'humanized-text.txt';
+        a.click();
+        URL.revokeObjectURL(url);
+      }
+    }
+
+    // Initialize
+    const app = new Humanizer();
+  </script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+  <script src="script.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentation | AI Tools Suite</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="doc_styles.css">
+</head>
+
+<body>
+
+    <nav class="main-nav">
+        <a href="index.html" class="nav-brand">AI Tools Suite</a>
+        <div class="nav-links">
+            <a href="index.html" class="nav-link">Humanizer</a>
+            <a href="contentdetector.html" class="nav-link">Detector</a>
+            <a href="docs_intro.html" class="nav-link active">Documentation</a>
+        </div>
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle Dark Mode">🌙</button>
+    </nav>
+
+    <div class="doc-container">
+        <aside class="doc-sidebar">
+            <a href="docs_intro.html" class="sidebar-link active-page">Introduction</a>
+            <a href="docs_humanizer.html" class="sidebar-link">Humanizer Guide</a>
+            <a href="docs_detector.html" class="sidebar-link">Detector Guide</a>
+            <a href="docs_technical.html" class="sidebar-link">Technical Overview</a>
+        </aside>
+
+        <main class="doc-content">
+            <h1>Introduction</h1>
+            <p class="subtitle">Welcome to the AI Tools Suite documentation.</p>
+
+            <div class="card">
+                <h2>About the Project</h2>
+                <p>
+                    This suite provides advanced natural language processing tools designed to analyze and transform
+                    text.
+                    Whether you need to detect AI-generated content or humanize robotic text, our tools offer
+                    state-of-the-art solutions with an intuitive interface.
+                </p>
+            </div>
+
+            <h2>Available Tools</h2>
+            <ul>
+                <li>
+                    <strong>AI Humanizer:</strong> Rewrites AI-generated text to sound more natural and human-like using
+                    advanced synonym replacement and structural variance.
+                </li>
+                <li>
+                    <strong>AI Content Detector:</strong> Analyzes text patterns to determine the likelihood of AI
+                    generation based on burstiness and perplexity metrics.
+                </li>
+            </ul>
+
+            <h2>Getting Started</h2>
+            <p>
+                Navigate through the sidebar to learn more about each tool, or jump straight into using them via the top
+                navigation bar.
+                We recommend reading the <a href="docs_technical.html">Technical Overview</a> to understand the
+                underlying metrics used in our detection algorithms.
+            </p>
+        </main>
+    </div>
+
+    <script>
+        // Theme Toggle Logic
+        const themeToggle = document.getElementById('themeToggle');
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        document.documentElement.setAttribute('data-theme', savedTheme);
+        themeToggle.innerText = savedTheme === 'light' ? '🌙' : '☀️';
+
+        themeToggle.addEventListener('click', () => {
+            const current = document.documentElement.getAttribute('data-theme');
+            const next = current === 'light' ? 'dark' : 'light';
+            document.documentElement.setAttribute('data-theme', next);
+            localStorage.setItem('theme', next);
+            themeToggle.innerText = next === 'light' ? '🌙' : '☀️';
+        });
+    </script>
+</body>
+
+</html>

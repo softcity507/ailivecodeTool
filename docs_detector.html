@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detector Guide | AI Tools Suite</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="doc_styles.css">
+</head>
+
+<body>
+
+    <nav class="main-nav">
+        <a href="index.html" class="nav-brand">AI Tools Suite</a>
+        <div class="nav-links">
+            <a href="index.html" class="nav-link">Humanizer</a>
+            <a href="contentdetector.html" class="nav-link">Detector</a>
+            <a href="docs_intro.html" class="nav-link active">Documentation</a>
+        </div>
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle Dark Mode">🌙</button>
+    </nav>
+
+    <div class="doc-container">
+        <aside class="doc-sidebar">
+            <a href="docs_intro.html" class="sidebar-link">Introduction</a>
+            <a href="docs_humanizer.html" class="sidebar-link">Humanizer Guide</a>
+            <a href="docs_detector.html" class="sidebar-link active-page">Detector Guide</a>
+            <a href="docs_technical.html" class="sidebar-link">Technical Overview</a>
+        </aside>
+
+        <main class="doc-content">
+            <h1>AI Content Detector Guide</h1>
+            <p>Analyze text patterns to identify AI-generated content.</p>
+
+            <h2>Dashboard Overview</h2>
+            <div class="card">
+                <h3>AI Probability Score</h3>
+                <p>The main gauge shows the percentage likelihood that the text was written by an AI model.
+                    <br><span style="color:var(--danger)">High Score (70%+)</span> = Likely AI
+                    <br><span style="color:var(--success)">Low Score (<40%)< /span> = Likely Human
+                </p>
+            </div>
+
+            <h2>Metrics Explained</h2>
+            <ul>
+                <li><strong>Sentences:</strong> Total sentence count in the analyzed text.</li>
+                <li><strong>Avg Length:</strong> Average number of words per sentence. AI tends to be very uniform
+                    (around 15-20 words).</li>
+                <li><strong>Lexical Diversity:</strong> The ratio of unique words to total words. Humans typically use a
+                    wider vocabulary.</li>
+                <li><strong>Burstiness:</strong> Measures the variation in sentence length. Humans write with high
+                    burstiness (mixing short and long sentences), while AI is consistent.</li>
+            </ul>
+
+            <h2>Usage Tips</h2>
+            <p>For best results, input at least <strong>30 words</strong>. The detector relies on statistical patterns
+                which become more reliable with larger sample sizes.</p>
+        </main>
+    </div>
+
+    <script>
+        const themeToggle = document.getElementById('themeToggle');
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        document.documentElement.setAttribute('data-theme', savedTheme);
+        themeToggle.innerText = savedTheme === 'light' ? '🌙' : '☀️';
+
+        themeToggle.addEventListener('click', () => {
+            const current = document.documentElement.getAttribute('data-theme');
+            const next = current === 'light' ? 'dark' : 'light';
+            document.documentElement.setAttribute('data-theme', next);
+            localStorage.setItem('theme', next);
+            themeToggle.innerText = next === 'light' ? '🌙' : '☀️';
+        });
+    </script>
+</body>
+
+</html>
