@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { humanizeText, HumanizeOptions } from '../utils/humanizer';
+import { humanizeText } from '../utils/humanizer';
+import type { HumanizeOptions } from '../utils/humanizer';
 
-const Humanizer: React.FC = () => {
+const Home: React.FC = () => {
     const [input, setInput] = useState('');
     const [output, setOutput] = useState('');
     const [status, setStatus] = useState('Ready');
@@ -197,4 +198,4 @@ const Humanizer: React.FC = () => {
     );
 };
 
-export default Humanizer;
+export default Home;
